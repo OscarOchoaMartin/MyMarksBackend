@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import bodyParser from 'body-parser';
-import routes from './routes/allRoutes';
+//import routes from './routes/allRoutes';
 import session from 'express-session';
 
 const app = express();
@@ -14,7 +14,7 @@ app.use(session({secret: 'TopSecret'}));
 
 const port = process.env.PORT || 3000;
 
-routes(app);
+// routes(app);
 
 app.listen(port, ()=>{
     console.log("started");
