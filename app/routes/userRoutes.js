@@ -2,7 +2,6 @@
 import userController from '../controllers/userController';
 
 function init(app){
-
     app.route('/users/login')
         .post(userController.login)
 
