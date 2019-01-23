@@ -7,7 +7,7 @@ function init(app){
         .get(subjectController.getAllSubjects)
         .post(subjectController.createSubject)
 
-    app.route('/subject/:subjectName')
+    app.route('/subject/:subjectId')
         .get(subjectController.getSubject)
         .put(subjectController.updateSubject)
         .delete(subjectController.deleteSubject)

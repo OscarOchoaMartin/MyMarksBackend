@@ -3,54 +3,26 @@ var {subjects, user_subject} = sequelize.models;
 
 function getAllSubjects({params}, res){
     subjects.find({
-        include: [{
-            model: user_subject,
-            required: true,
-            where: {userId: params.userId}
-           }],
+        where: {userId: params.userId}
     }).then(subjects => {
         res.status(200).json(subjects);
     });
 }
 
-function createSubject({params, body}, res){
+function createSubject({params, body}, res){    
+    var instance = subjects.build({
+        name: body.name,
+        enrollTime: body.enrollTime,
+        userId: body.userId
+    });
 
-    subjects.findById(body.name)
-        .then(exist =>{
-            if(exist){
-                var relation = user_subject.build ({
-                    subjectId: exist.name,
-                    userId: params.userId
-                });
-                relation.save().then(()=>{
-                    res.status(200).json(newSubject);
-                });
-            }
-
-            else {
-                var instance = subjects.build({
-                    name: body.name,
-                    enrollTime: body.enrollTime
-                });
-        
-                instance.save().then(newSubject => {
-                    var relation = user_subject.build ({
-                        subjectId: newSubject.name,
-                        userId: params.userId
-                    });
-                    relation.save().then(()=>{
-                        res.status(200).json(newSubject);
-                    });
-                });
-            }
-        })
-        .catch(error => {
-            res.status(400).send(error);
-        });
+    instance.save().then(newSubject => {
+        res.status(200).json(newSubject);
+    });
 }
 
 function getSubject({params}, res){
-    subjects.findById(params.subjectName)
+    subjects.findById(params.subjectId)
         .then(subject=>{
             res.status(200).json(subject);
         })
@@ -60,7 +32,7 @@ function getSubject({params}, res){
 }
 
 function updateSubject({params, body}, res){
-    subject.findById(params.subjectName)
+    subject.findById(params.subjectId)
         .then(subject=>{
             subject.enrollTime = body.enrollTime;
             subject.save(updated=>{
@@ -73,7 +45,7 @@ function updateSubject({params, body}, res){
 }
 
 function deleteSubject({params}, res){
-    subject.findById(params.subjectName)
+    subject.findById(params.subjectId)
         .then(subject=>{
             subject.destroy().then(()=>{
                 res.status(200).json({status: "success", message: "subject succesfully deleted"});

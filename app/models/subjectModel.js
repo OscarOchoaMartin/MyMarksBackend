@@ -1,9 +1,12 @@
 export default (sequelize, type) => {
     return sequelize.define ('subjects', {
-        name: {
-            type: type.STRING,
-            primaryKey: true
+        id: {
+            type: type.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
         },
-        enrollTime: type.INTEGER
+        name: type.STRING,
+        enrollTime: type.INTEGER,
+        userId: type.INTEGER
     });
 }
