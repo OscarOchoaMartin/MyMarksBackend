@@ -5,6 +5,6 @@ export default (sequelize, type) => {
             primaryKey: true,
             autoIncrement: true
         },
-        username: type.STRING,
+        email: type.STRING,
     });
 }

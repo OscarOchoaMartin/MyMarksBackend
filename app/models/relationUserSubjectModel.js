@@ -1,7 +1,7 @@
 export default (sequelize, type) => {
 	return sequelize.define ('user_subject', {
 		subjectId: {
-			type: type.INTEGER,
+			type: type.STRING,
 			primaryKey: true,
         },
         userId: {

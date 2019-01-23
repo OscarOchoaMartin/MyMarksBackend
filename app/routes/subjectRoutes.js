@@ -3,11 +3,11 @@ import subjectController from '../controllers/subjectController';
 
 function init(app){
 
-    app.route('/subjects')
+    app.route('/subjects/:userId')
         .get(subjectController.getAllSubjects)
-        .post(subjectController.createASubject)
+        .post(subjectController.createSubject)
 
-    app.route('/subject/:idSubject')
+    app.route('/subject/:subjectName')
         .get(subjectController.getSubject)
         .put(subjectController.updateSubject)
         .delete(subjectController.deleteSubject)
