@@ -9,15 +9,12 @@ function init(app){
     app.route('/task/:idTask')
         .get(taskController.getTask)
         .put(taskController.updateTask)
-        .delete(taaskController.deleteTask);
+        .delete(taskController.deleteTask);
 
     app.route('/task/:idTask/subtask')
         .get(taskController.getAllSubtasks)
-        .post(taskController.createSubTask);
+        .post(taskController.createSubtask);
 
-    app.route('/subtask/:idSubtask')
-        .put(taskController.updateSubtask)
-        .delete(taskController.deleteSubtask);
 }
 
 export default init;
