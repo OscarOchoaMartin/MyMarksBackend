@@ -6,6 +6,7 @@ export default (sequelize, type) => {
             autoIncrement: true
         },
         name: type.STRING,
-        enrollTime: type.INTEGER
+        enrollTime: type.INTEGER,
+        userId: type.INTEGER
     });
 }
