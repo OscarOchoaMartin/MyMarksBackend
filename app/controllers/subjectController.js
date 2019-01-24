@@ -1,5 +1,5 @@
 import sequelize from '../sequelize';
-var {subjects, user_subject} = sequelize.models;
+var {subjects} = sequelize.models;
 
 function getAllSubjects({params}, res){
     subjects.findAll({

@@ -2,11 +2,9 @@
 import userController from '../controllers/userController';
 
 function init(app){
-    app.route('/users/login')
-        .post(userController.login)
 
-    app.route('/users/logout')
-        .post(userController.logout)
+    app.route('/users')
+        .post(userController.register)
 }
 
 export default init;
