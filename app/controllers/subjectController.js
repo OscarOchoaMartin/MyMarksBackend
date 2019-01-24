@@ -2,7 +2,7 @@ import sequelize from '../sequelize';
 var {subjects, user_subject} = sequelize.models;
 
 function getAllSubjects({params}, res){
-    subjects.find({
+    subjects.findAll({
         where: {userId: params.userId}
     }).then(subjects => {
         res.status(200).json(subjects);
@@ -13,7 +13,7 @@ function createSubject({params, body}, res){
     var instance = subjects.build({
         name: body.name,
         enrollTime: body.enrollTime,
-        userId: body.userId
+        userId: params.userId
     });
 
     instance.save().then(newSubject => {
@@ -32,12 +32,16 @@ function getSubject({params}, res){
 }
 
 function updateSubject({params, body}, res){
-    subject.findById(params.subjectId)
+    subjects.findById(params.subjectId)
         .then(subject=>{
-            subject.enrollTime = body.enrollTime;
-            subject.save(updated=>{
-                res.status(200).json(updated);
-            })
+            if(body.name)
+                subject.name = body.name;
+            if(body.enrollTime)
+                subject.enrollTime = body.enrollTime;
+            subject.save()
+                .then(updated=>{
+                    res.status(200).json(updated);
+                })
         })
         .catch(error => {
             res.status(400).send(error);
@@ -45,7 +49,7 @@ function updateSubject({params, body}, res){
 }
 
 function deleteSubject({params}, res){
-    subject.findById(params.subjectId)
+    subjects.findById(params.subjectId)
         .then(subject=>{
             subject.destroy().then(()=>{
                 res.status(200).json({status: "success", message: "subject succesfully deleted"});
