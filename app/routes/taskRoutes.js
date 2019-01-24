@@ -2,7 +2,7 @@
 import taskController from '../controllers/taskController';
 
 function init(app){
-    app.route('/tasks')
+    app.route('/subject/:subjectId/tasks')
         .get(taskController.getAllTasks)
         .post(taskController.createTask);
 
