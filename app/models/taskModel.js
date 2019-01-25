@@ -6,7 +6,7 @@ export default (sequelize, type) => {
             autoIncrement: true
         },
         percentage: type.FLOAT,
-        mark: { type: type.FLOAT, defaultValue: null },
+        mark: { type: type.FLOAT, defaultValue: 0 },
         subjectId: { type: type.INTEGER, defaultValue: null },
         parentTask: { type: type.INTEGER, defaultValue: null }
     });
