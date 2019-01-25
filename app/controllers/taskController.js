@@ -12,8 +12,10 @@ function getAllTasks({params}, res){
 
 function createTask({params, body}, res){
     if(!body.mark)
-        body.mark = null;
+        body.mark = 0;
+    
     var instance = tasks.build({
+        name: body.name,
         percentage: body.percentage,
         mark: body.mark,
         subjectId: params.subjectId,
@@ -40,6 +42,8 @@ function updateTask({params, body}, res){
             result.percentage = body.percentage;
         if(body.mark)
             result.mark = body.mark;
+        if(body.name)
+            result.name = body.name;
         result.save().then(modifTask=>{
             if(modifTask.parentTask){
                 updateParents(modifTask.parentTask).then(()=>{
@@ -81,6 +85,7 @@ function getAllSubtasks({params}, res){
 
 function createSubtask({params, body}, res){
     var instance = tasks.build({
+        name: body.name,
         percentage: body.percentage,
         mark: body.mark,
         parentTask: params.idTask
