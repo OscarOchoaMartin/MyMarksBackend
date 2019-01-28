@@ -114,10 +114,10 @@ function updateParents(parentId){
                 parentTask.mark = 0;
                 subtasks.forEach((subtask)=>{
                     parentTask.mark += subtask.mark * subtask.percentage / 100;
-                    parentTask.save();
                 });
+                parentTask.save();
                 if(parentTask.parentTask){
-                    updateParents(parentTask.parentTask, res).then(()=>{
+                    updateParents(parentTask.parentTask).then(()=>{
                         resolve();
                     });
                 }
