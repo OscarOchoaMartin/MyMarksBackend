@@ -2,11 +2,13 @@ import sequelize from '../sequelize';
 var {subjects} = sequelize.models;
 
 function getAllSubjects({params}, res){
-    subjects.findAll({
-        where: {userId: params.userId}
-    }).then(subjects => {
-        res.status(200).json(subjects);
-    });
+    subjects.findAll({where: {userId: params.userId}})
+        .then(subjects => {
+            res.status(200).json(subjects);
+        })
+        .catch(err =>{
+            res.status(400).send(err);
+        })
 }
 
 function createSubject({params, body}, res){    
@@ -16,9 +18,13 @@ function createSubject({params, body}, res){
         userId: params.userId
     });
 
-    instance.save().then(newSubject => {
-        res.status(200).json(newSubject);
-    });
+    instance.save()
+        .then(newSubject => {
+            res.status(200).json(newSubject);
+        })
+        .catch(err =>{
+            res.status(400).send(err);
+        })
 }
 
 function getSubject({params}, res){

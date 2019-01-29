@@ -76,11 +76,13 @@ function deleteTask({params, body}, res){
 }
 
 function getAllSubtasks({params}, res){
-    tasks.findAll({
-        where: {parentTask: params.idTask}
-    }).then(subtasks=>{
-        res.status(200).json(subtasks);
-    })
+    tasks.findAll({where: {parentTask: params.idTask}})
+        .then(subtasks=>{
+            res.status(200).json(subtasks);
+        })
+        .catch(err =>{
+            res.status(400).send(err);
+        })
 }
 
 function createSubtask({params, body}, res){
@@ -91,40 +93,52 @@ function createSubtask({params, body}, res){
         parentTask: params.idTask
     });
     
-    instance.save().then(task=>{
-        if(body.mark){
-            updateParents(params.idTask).then(()=>{
+    instance.save()
+        .then(task=>{
+            if(body.mark){
+                updateParents(params.idTask)
+                    .then(()=>{
+                        res.status(200).json(task);
+                    })
+                    .catch(err =>{
+                        res.status(400).send(err);
+                    })
+            }
+            else {
                 res.status(200).json(task);
-            });
-        }
-        else {
-            res.status(200).json(task);
-        }
-    })
+            }
+        })
+        .catch(err =>{
+            res.status(400).send(err);
+        })
 }
 
 function updateParents(parentId){
     return new Promise(function(resolve, reject){
-        tasks.find({
-            where: {id: parentId}
-        }).then(parentTask=>{
-            tasks.findAll({
-                where: {parentTask: parentId}
-            }).then(subtasks=>{
-                parentTask.mark = 0;
-                subtasks.forEach((subtask)=>{
-                    parentTask.mark += subtask.mark * subtask.percentage / 100;
-                });
-                parentTask.save();
-                if(parentTask.parentTask){
-                    updateParents(parentTask.parentTask).then(()=>{
-                        resolve();
+        tasks.find({where: {id: parentId}}).then(parentTask=>{
+            tasks.findAll({where: {parentTask: parentId}})
+                .then(subtasks=>{
+                    parentTask.mark = 0;
+                    subtasks.forEach((subtask)=>{
+                        parentTask.mark += subtask.mark * subtask.percentage / 100;
                     });
-                }
-                else{
-                    resolve();
-                }
-            }); 
+                    parentTask.save();
+                    if(parentTask.parentTask){
+                        updateParents(parentTask.parentTask)
+                            .then(()=>{
+                                resolve();
+                            })
+                            .catch(err =>{
+                                reject(err);
+                            })
+                    }
+                    else{
+                        resolve();
+                    }
+                })
+                .catch(err =>{
+                    res.status(400).send(err);
+                })
         });
     });
 }
