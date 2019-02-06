@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run install && node prod/app.js",
-    "install": "./node_modules/.bin/babel app -d prod"
+    "install": "./node_modules/.bin/babel /app -d prod"
   },
   "repository": {
     "type": "git",
