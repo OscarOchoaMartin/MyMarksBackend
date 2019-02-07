@@ -13,6 +13,10 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
 routes(app);
+app.get('*', function(req, res){
+    res.send('endpoint not found', 404);
+});
+
 
 app.listen(port, ()=>{
     console.log("started");
