@@ -1,9 +1,13 @@
 'use strict';
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import routes from './routes/allRoutes';
 
 const app = express();
+
+//CORS
+app.use(cors());
 
 app.use(bodyParser.urlencoded({
     extended: true
