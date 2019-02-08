@@ -7,6 +7,6 @@ export default (sequelize, type) => {
         },
         name: type.STRING,
         enrollTime: type.INTEGER,
-        userId: type.INTEGER
+        userId: type.STRING
     });
 }
