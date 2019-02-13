@@ -77,9 +77,11 @@ function getMark(subject){
             where:{subjectId: subject.id, parentTask: null}
         }).then(tasks=>{
             subject.mark = 0;
-            tasks.forEach(t=>{
-                subject.mark += t.mark;
-            })
+            if(tasks){
+                tasks.forEach(t=>{
+                    subject.mark += t.mark;
+                })
+            }
             resolve(subject);
         })
     })
