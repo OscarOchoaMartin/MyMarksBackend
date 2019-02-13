@@ -5,11 +5,16 @@ var {tasks} = sequelize.models;
 function getAllSubjects({params}, res){
     subjects.findAll({where: {userId: params.userId}})
         .then(subjects => {
-            var actions = subjects.map(getMark);
-            var results = Promise.all(actions);
-            results.then(subjects=>{
+            if(subjects){
+                var actions = subjects.map(getMark);
+                var results = Promise.all(actions);
+                results.then(subjects=>{
+                    res.status(200).json(subjects);
+                })
+            }
+            else {
                 res.status(200).json(subjects);
-            })
+            }
         })
         .catch(err =>{
             res.status(400).send(err);
@@ -76,10 +81,10 @@ function getMark(subject){
         tasks.find({
             where:{subjectId: subject.id, parentTask: null}
         }).then(tasks=>{
-            subject.mark = 0;
+            subject.dataValues.mark = 0;
             if(tasks){
                 tasks.forEach(t=>{
-                    subject.mark += t.mark;
+                    subject.dataValues.mark += t.mark;
                 })
             }
             resolve(subject);
