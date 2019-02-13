@@ -1,10 +1,15 @@
 import sequelize from '../sequelize';
 var {subjects} = sequelize.models;
+var {tasks} = sequelize.models;
 
 function getAllSubjects({params}, res){
     subjects.findAll({where: {userId: params.userId}})
         .then(subjects => {
-            res.status(200).json(subjects);
+            var actions = subjects.map(getMark);
+            var results = Promise.all(actions);
+            results.then(subjects=>{
+                res.status(200).json(subjects);
+            })
         })
         .catch(err =>{
             res.status(400).send(err);
@@ -66,6 +71,19 @@ function deleteSubject({params}, res){
         })
 }
 
+function getMark(subject){
+    return new Promise(resolve => {
+        tasks.find({
+            where:{subjectId: subject.id, parentTask: null}
+        }).then(tasks=>{
+            subject.mark = 0;
+            tasks.forEach(t=>{
+                subject.mark += t.mark;
+            })
+            resolve(subject);
+        })
+    })
+}
 export default {
     getAllSubjects,
     createSubject,
