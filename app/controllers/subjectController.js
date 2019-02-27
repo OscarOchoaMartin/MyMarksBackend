@@ -78,12 +78,12 @@ function deleteSubject({params}, res){
 
 function getMark(subject){
     return new Promise(resolve => {
-        tasks.find({
+        tasks.findAll({
             where:{subjectId: subject.id, parentTask: null}
         }).then(tasks=>{
             subject.dataValues.mark = 0;
             if(tasks){
-                tasks.dataValues.forEach(t=>{
+                tasks.forEach(t=>{
                     subject.dataValues.mark += t.mark;
                 })
             }
