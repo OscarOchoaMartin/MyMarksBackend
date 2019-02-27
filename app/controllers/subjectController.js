@@ -83,6 +83,7 @@ function getMark(subject){
         }).then(tasks=>{
             subject.dataValues.mark = 0;
             if(tasks){
+                console.log(tasks);
                 tasks.forEach(t=>{
                     subject.dataValues.mark += t.mark;
                 })
